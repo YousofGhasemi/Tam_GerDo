@@ -9,9 +9,9 @@ RUN apt-get update \
         libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./requirements.txt /tmp/requirements.txt
-COPY ./requirements.dev.txt /tmp/requirements.dev.txt
-COPY ./app /app
+COPY ../requirements.txt /tmp/requirements.txt
+COPY ../requirements.dev.txt /tmp/requirements.dev.txt
+COPY ../app /app
 WORKDIR /app
 EXPOSE 8000
 
