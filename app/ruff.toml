@@ -1,8 +1,10 @@
-# Set the maximum line length to 95.
+[tool.ruff]
 line-length = 95
-
-[lint]
-# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
-# overlap with the use of a formatter, like Black, but we can override this behavior by
-# explicitly adding the rule.
 extend-select = ["E501", "N", "R", "I"]
+
+# Ignore all Django migration files
+exclude = [
+    "*/migrations/*",
+    ".venv/*",
+    "__pycache__/*"
+]
