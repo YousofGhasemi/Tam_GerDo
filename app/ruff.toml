@@ -1,4 +1,3 @@
-[tool.ruff]
 line-length = 95
 extend-select = ["E501", "N", "R", "I"]
 
