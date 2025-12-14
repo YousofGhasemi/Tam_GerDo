@@ -23,7 +23,7 @@ class PublicUserAPITest(TestCase):
         self.client = APIClient()
 
     def test_create_user_success(self):
-        """Test creating a user is successful."""
+        """Test creating a user is successfull."""
 
         payload = {
             "email": "test@example.com",
@@ -32,7 +32,7 @@ class PublicUserAPITest(TestCase):
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
-        user = create_user(email=payload["email"])
+        user = get_user_model().objects.get(email=payload["email"])
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(user.check_password(payload["password"]))
@@ -62,7 +62,7 @@ class PublicUserAPITest(TestCase):
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
-        user_exist = get_user_model().objects.filter(email=payload(["email"])).exists()
+        user_exist = get_user_model().objects.filter(email=payload["email"]).exists()
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(user_exist)
