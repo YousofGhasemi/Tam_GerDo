@@ -69,7 +69,7 @@ class PublicUserAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(user_exist)
 
-    def test_create_toke_for_user(self):
+    def test_create_token_for_user(self):
         """Test generates token for valid credentials."""
 
         user_details = {
