@@ -2,6 +2,8 @@
 Tests for Models
 """
 
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -65,7 +67,7 @@ class ModleTests(TestCase):
             user=user,
             title="Sample recipe name",
             time_minutes=5,
-            price=5.50,
+            price=Decimal("5.50"),
             description="Sample recipe description",
         )
 
