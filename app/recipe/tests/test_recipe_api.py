@@ -2,8 +2,6 @@
 Test for recipe APIs
 """
 
-from decimal import Decimal
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -28,7 +26,7 @@ def create_recipe(user, **params):
     defaults = {
         "title": "Sample recipe title",
         "time_minutes": 20,
-        "price": Decimal("5.50"),
+        "price": 5.50,
         "description": "Sample description",
         "link": "http://example.com/recipe.pdf",
     }
@@ -62,7 +60,7 @@ class PrivateRecipeAPITest(TestCase):
         )
         self.client.force_authenticate(self.user)
 
-    def test_retrive_recipes(self):
+    def test_retrieve_recipes(self):
         """Test Retrieving a list of recipes"""
 
         create_recipe(user=self.user)
@@ -104,3 +102,23 @@ class PrivateRecipeAPITest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_create_recipe(self):
+        """Test creating recipe"""
+
+        payload = {
+            "title": "Sample recipe title",
+            "time_minutes": 20,
+            "price": 5.50,
+            "description": "Sample description",
+            "link": "http://example.com/recipe.pdf",
+        }
+        res = self.client.post(RECIPES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        recipe = Recipe.objects.get(id=res.data["id"])
+
+        for k, v in payload.items():
+            self.assertEqual(getattr(recipe, k), v)
+        self.assertEqual(recipe.user, self.user)
