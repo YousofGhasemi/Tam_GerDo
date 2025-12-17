@@ -10,7 +10,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Recipe
+from core.models import Recipe, Tag
 from recipe.serializers import RecipeDetailSerializer, RecipeSerializer
 
 RECIPES_URL = reverse("recipe:recipe-list")
