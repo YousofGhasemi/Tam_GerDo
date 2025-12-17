@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Project APPs
     "core",
     "user",
+    "recipe",
 ]
 
 MIDDLEWARE = [
