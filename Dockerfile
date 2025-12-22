@@ -7,11 +7,15 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         libpq-dev \
+        libjpeg-dev \
+        zlib1g \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ../requirements.txt /tmp/requirements.txt
 COPY ../requirements.dev.txt /tmp/requirements.dev.txt
 COPY ../app /app
+
 WORKDIR /app
 EXPOSE 8000
 
@@ -23,5 +27,9 @@ RUN if [ "$DEV" = "true" ] ; then \
         pip install -r /tmp/requirements.dev.txt ; \
     fi
 
-RUN adduser --disabled-password --gecos "" django-user
+RUN adduser --disabled-password --no-create-home django-user && \
+    mkdir -p /vol/web/media /vol/web/static && \
+    chown -R django-user:django-user /vol && \
+    chmod -R 755 /vol
+
 USER django-user
