@@ -7,11 +7,15 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         libpq-dev \
+        libjpeg-dev \
+        zlib1g \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ../requirements.txt /tmp/requirements.txt
 COPY ../requirements.dev.txt /tmp/requirements.dev.txt
 COPY ../app /app
+
 WORKDIR /app
 EXPOSE 8000
 
