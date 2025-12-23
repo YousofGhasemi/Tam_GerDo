@@ -435,6 +435,56 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(recipe.ingredients.count(), 0)
 
+    def test_filter_by_tags(self):
+        """Test filtring recipes by tags"""
+
+        recipe1 = create_recipe(user=self.user, title="recipe1")
+        recipe2 = create_recipe(user=self.user, title="recipe2")
+        recipe3 = create_recipe(user=self.user, title="recipe3")
+
+        tag1 = Tag.objects.create(user=self.user, name="tag1")
+        tag2 = Tag.objects.create(user=self.user, name="tag2")
+
+        recipe1.tags.add(tag1)
+        recipe2.tags.add(tag2)
+
+        params = {"tags": f"{tag1.id},{tag2.id}"}
+
+        res = self.client.get(RECIPES_URL, params)
+
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
+
+    def test_filter_by_ingredients(self):
+        """Test filtring recipes by ingredients"""
+
+        recipe1 = create_recipe(user=self.user, title="recipe1")
+        recipe2 = create_recipe(user=self.user, title="recipe2")
+        recipe3 = create_recipe(user=self.user, title="recipe3")
+
+        ingredien1 = Ingredient.objects.create(user=self.user, name="ingredien1")
+        ingredien2 = Ingredient.objects.create(user=self.user, name="ingredien2")
+
+        recipe1.ingredients.add(ingredien1)
+        recipe2.ingredients.add(ingredien2)
+
+        params = {"ingredients": f"{ingredien1.id},{ingredien2.id}"}
+
+        res = self.client.get(RECIPES_URL, params)
+
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
+
 
 class ImageUploadTest(TestCase):
     """Test for the image upload API"""
