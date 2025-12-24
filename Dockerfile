@@ -14,9 +14,9 @@ RUN apt-get update \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ../requirements.txt /tmp/requirements.txt
-COPY ../requirements.dev.txt /tmp/requirements.dev.txt
-COPY ../scripts /scripts
+COPY ./requirements.txt /tmp/requirements.txt
+COPY ./requirements.dev.txt /tmp/requirements.dev.txt
+COPY ./scripts /scripts
 COPY app /app
 
 WORKDIR /app
