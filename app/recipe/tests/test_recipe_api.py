@@ -54,11 +54,13 @@ def create_recipe(user, **params):
 
 def create_tag(user, name="Sample Tag"):
     """Create and return a sample tag"""
+
     return Tag.objects.create(user=user, name=name)
 
 
 def create_ingredient(user, name="Sample Ingredient"):
     """Create and return a sample ingredient"""
+
     return Ingredient.objects.create(user=user, name=name)
 
 
