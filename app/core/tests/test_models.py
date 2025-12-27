@@ -17,18 +17,15 @@ def create_user(email="user@example.com", password="Pass@123"):
     return get_user_model().objects.create_user(email, password)
 
 
-class ModleTests(TestCase):
+class ModelTests(TestCase):
     """Test Models"""
 
     def test_create_user_with_email(self):
         """Testing for user creation via email"""
 
-        email = "test@example.com"
-        password = "Test@123"
-        user = get_user_model().objects.create_user(
-            email=email,
-            password=password,
-        )
+        email = "user@example.com"
+        password = "Pass@123"
+        user = create_user(email=email, password=password)
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
@@ -43,7 +40,7 @@ class ModleTests(TestCase):
             ["test4@EXAMPLE.COM", "test4@example.com"],
         ]
         for email, expected in sample_emails:
-            user = get_user_model().objects.create_user(email, "Sample123")
+            user = create_user(email=email)
             self.assertEqual(user.email, expected)
 
     def test_new_user_without_email_raises_error(self):
@@ -53,7 +50,7 @@ class ModleTests(TestCase):
             get_user_model().objects.create_user("", "Test123")
 
     def test_create_superuser(self):
-        """TEst creating a superuser."""
+        """Test creating a superuser."""
 
         user = get_user_model().objects.create_superuser(
             "test@example.com",
@@ -66,10 +63,7 @@ class ModleTests(TestCase):
     def test_create_recipe(self):
         """Test creating recipe is successful"""
 
-        user = get_user_model().objects.create_user(
-            "test@example.com",
-            "Test@123",
-        )
+        user = create_user()
         recipe = models.Recipe.objects.create(
             user=user,
             title="Sample recipe name",
