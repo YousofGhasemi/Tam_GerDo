@@ -38,6 +38,7 @@ A production-grade Django REST API built with Test-Driven Development (TDD), con
   - Custom user model with email authentication
   - Token-based authentication
   - User profile management
+  - Users can mark recipes as favorites
 
 - **Recipe Management**
   - CRUD operations for recipes
@@ -69,7 +70,7 @@ git clone https://github.com/YousofGhasemi/Tam_GerDo.git
 cd Tam_GerDo
 ```
 
-### 2. Create environment file
+### 2. Create an environment file
 
 ```bash
 cp .env.sample .env
@@ -120,6 +121,11 @@ docker compose run --rm app sh -c "ruff check --fix --no-cache"
 - `DELETE /api/recipe/recipes/{id}/` - Delete recipe
 - `POST /api/recipe/recipes/{id}/upload-image/` - Upload recipe image
 
+### Favorite Recipes
+- `GET /api/recipe/recipes/favorites/` - List user favorite recipes
+- `POST /api/recipe/recipes/{id}/favorite/` - Add recipe to favorites
+- `DELETE /api/recipe/recipes/{id}/favorite/` - Remove recipe from favorites
+- 
 ### Tags
 - `GET /api/recipe/tags/` - List tags
 - `POST /api/recipe/tags/` - Create tag
