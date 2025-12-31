@@ -12,13 +12,13 @@ from rest_framework.test import APIClient
 
 from core.models import Recipe
 
-FAVORITE_URL = reverse("recipe:favorite_list")
+FAVORITE_URL = reverse("recipe:recipe-favorites")
 
 
 def detail_url(recipe_id):
     """Create and return a favorite detail url"""
 
-    return reverse("recipe:favorite-recipe", args=[recipe_id])
+    return reverse("recipe:recipe-favorite", args=[recipe_id])
 
 
 def create_user(**params):
@@ -124,7 +124,7 @@ class PrivateFavoriteAPITest(TestCase):
 
         res = self.client.post(url)
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIn(recipe, self.user.favorites.all())
         self.assertEqual(self.user.favorites.filter(id=recipe.id).count(), 1)
 
@@ -162,4 +162,4 @@ class PrivateFavoriteAPITest(TestCase):
         res = self.client.delete(url)
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(len(res.data), 0)
+        self.assertFalse(self.user.favorites.filter(id=recipe.id).exists())
