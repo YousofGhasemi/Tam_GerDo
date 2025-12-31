@@ -56,6 +56,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    favorites = models.ManyToManyField(
+        "Recipe",
+        related_name="favorited_by",
+        blank=True,
+    )
 
     objects = UserManager()
 
@@ -76,7 +81,7 @@ class Recipe(models.Model):
     link = models.CharField(max_length=255, blank=True)
     tags = models.ManyToManyField("Tag")
     ingredients = models.ManyToManyField("Ingredient")
-    image = models.ImageField(null=True, upload_to=recipe_image_file_path)
+    image = models.ImageField(null=True, blank=True, upload_to=recipe_image_file_path)
 
     def __str__(self):
         return self.title

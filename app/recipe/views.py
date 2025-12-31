@@ -92,6 +92,32 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(methods=["POST", "DELETE"], detail=True, url_path="favorite")
+    def favorite(self, request, pk=None):
+        """Add or remove recipe from favorites"""
+
+        recipe = self.get_object()
+        user = request.user
+
+        if request.method == "POST":
+            if not user.favorites.filter(id=recipe.id).exists():
+                user.favorites.add(recipe)
+
+            return Response(status=status.HTTP_201_CREATED)
+
+        user.favorites.remove(recipe)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["GET"], detail=False)
+    def favorites(self, request):
+        """Return user favorites list"""
+
+        user = request.user
+        recipes = user.favorites.all().order_by("-id")
+        serializer = serializers.RecipeSerializer(recipes, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -105,7 +131,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ]
     )
 )
-class BaseREcipeAttrViewSet(
+class BaseRecipeAttrViewSet(
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,
     mixins.ListModelMixin,
@@ -128,14 +154,14 @@ class BaseREcipeAttrViewSet(
         return queryset.filter(user=self.request.user).order_by("-name").distinct()
 
 
-class TagViewSet(BaseREcipeAttrViewSet):
+class TagViewSet(BaseRecipeAttrViewSet):
     """Manage Tag in the database"""
 
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
 
 
-class IngredientViewSet(BaseREcipeAttrViewSet):
+class IngredientViewSet(BaseRecipeAttrViewSet):
     """manage Ingredients in the database"""
 
     serializer_class = serializers.IngredientSerializer
